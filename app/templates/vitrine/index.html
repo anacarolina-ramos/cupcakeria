@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import cupcake_svg %}
+{% from "_macros.html" import cupcake_img %}
 {% block titulo %}Vitrine{% endblock %}
 {% block conteudo %}
 <section class="hero">
@@ -18,7 +18,7 @@
 <ul class="grade">
   {% for c in cupcakes %}
   <li class="produto">
-    <div class="foto" style="--cobertura: {{ c.cor }}">{{ cupcake_svg(c.cor, 120) }}</div>
+    <div class="foto" style="--cobertura: {{ c.cor }}">{{ cupcake_img(c, 120) }}</div>
     <div class="info">
       <span class="tag">{{ c.categoria.nome }}</span>
       <h2>{{ c.nome }}</h2>

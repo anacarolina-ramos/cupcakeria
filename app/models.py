@@ -1,6 +1,10 @@
 """MODEL: entidades do domínio e mapeamento para o banco de dados."""
 from datetime import datetime
+import os
+import re
+import unicodedata
 
+from flask import current_app
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
@@ -41,6 +45,21 @@ class Cupcake(db.Model):
     @property
     def preco(self):
         return self.preco_centavos / 100
+
+    @property
+    def slug(self):
+        """Nome sem acento e com hífens: 'Limão Siciliano' vira 'limao-siciliano'."""
+        texto = unicodedata.normalize("NFKD", self.nome).encode("ascii", "ignore").decode()
+        return re.sub(r"[^a-z0-9]+", "-", texto.lower()).strip("-")
+
+    @property
+    def foto(self):
+        """Caminho da foto em static/img/cupcakes, ou None se não existir."""
+        pasta = os.path.join(current_app.static_folder, "img", "cupcakes")
+        for ext in ("jpg", "jpeg", "png", "webp"):
+            if os.path.exists(os.path.join(pasta, f"{self.slug}.{ext}")):
+                return f"img/cupcakes/{self.slug}.{ext}"
+        return None
 
 
 class Cliente(db.Model):

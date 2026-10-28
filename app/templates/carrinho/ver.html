@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_macros.html" import cupcake_svg %}
+{% from "_macros.html" import cupcake_img %}
 {% block titulo %}Carrinho{% endblock %}
 {% block conteudo %}
 <h1>Seu carrinho</h1>
@@ -7,7 +7,7 @@
 <ul class="lista-itens">
   {% for i in itens %}
   <li class="item {% if not i.cupcake.disponivel %}esgotado{% endif %}">
-    <div class="mini">{{ cupcake_svg(i.cupcake.cor, 56) }}</div>
+    <div class="mini">{{ cupcake_img(i.cupcake, 56) }}</div>
     <div class="item-info">
       <strong>{{ i.cupcake.nome }}</strong>
       <span>{{ i.cupcake.preco_centavos|brl }} cada</span>

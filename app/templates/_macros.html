@@ -17,3 +17,11 @@
   {% if erros.get(nome) %}<small class="erro-campo" id="erro-{{ nome }}">{{ erros[nome] }}</small>{% endif %}
 </div>
 {% endmacro %}
+
+{% macro cupcake_img(c, tamanho=120) %}
+{% if c.foto %}
+<img class="foto-img" src="{{ url_for('static', filename=c.foto) }}" alt="Cupcake de {{ c.nome }}" loading="lazy" width="{{ tamanho }}" height="{{ tamanho }}">
+{% else %}
+{{ cupcake_svg(c.cor, tamanho) }}
+{% endif %}
+{% endmacro %}
