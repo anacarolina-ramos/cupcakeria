@@ -4,9 +4,11 @@ import os
 
 def _url_banco():
     url = os.environ.get("DATABASE_URL", "sqlite:///cupcakeria.db")
-    # Alguns provedores entregam "postgres://", mas o SQLAlchemy exige "postgresql://"
-    if url.startswith("postgres://"):
-        url = url.replace("postgres://", "postgresql://", 1)
+    # Provedores entregam "postgres://" ou "postgresql://". Dizemos explicitamente
+    # qual driver usar (psycopg2), pois versões novas do SQLAlchemy mudaram o padrão.
+    for prefixo in ("postgres://", "postgresql://"):
+        if url.startswith(prefixo):
+            return "postgresql+psycopg2://" + url[len(prefixo):]
     return url
 
 
