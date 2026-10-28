@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block titulo %}Pedido #{{ pedido.id }}{% endblock %}
+{% block conteudo %}
+<h1>Pedido #{{ pedido.id }}</h1>
+<p class="status status-{{ pedido.status }}">{{ pedido.status_texto }}</p>
+
+{% set etapas = ['recebido', 'em_preparo', 'saiu_para_entrega', 'entregue'] %}
+{% if pedido.status != 'cancelado' %}
+<ol class="etapas" aria-label="Andamento do pedido">
+  {% for e in etapas %}
+    <li class="{% if etapas.index(pedido.status) >= loop.index0 %}feita{% endif %}">{{ STATUS_PEDIDO[e] }}</li>
+  {% endfor %}
+</ol>
+{% endif %}
+
+<div class="duas-colunas">
+  <section>
+    <h2>Itens</h2>
+    <ul class="lista-simples">
+      {% for i in pedido.itens %}<li><span>{{ i.quantidade }}× {{ i.cupcake.nome }}</span><span>{{ i.subtotal_centavos|brl }}</span></li>{% endfor %}
+    </ul>
+    <p class="linha-total"><span>Total</span><strong>{{ pedido.total_centavos|brl }}</strong></p>
+  </section>
+  <section>
+    <h2>Entrega</h2>
+    <p>{{ pedido.cliente.nome }}<br>{{ pedido.endereco.completo }}</p>
+    <h2>Pagamento</h2>
+    <p>{{ pedido.pagamento.metodo_texto }}: {{ pedido.pagamento.status }}</p>
+    <p class="ajuda">Confirmação enviada para {{ pedido.cliente.email }} (simulada nesta versão).</p>
+  </section>
+</div>
+{% endblock %}

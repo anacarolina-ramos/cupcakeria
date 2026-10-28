@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block titulo %}Sabores{% endblock %}
+{% block conteudo %}
+{% include "admin/_menu.html" %}
+<div class="cabecalho-pagina"><h1>Sabores</h1><a class="botao" href="{{ url_for('admin.novo_cupcake') }}">Cadastrar sabor</a></div>
+<div class="rolagem">
+<table class="tabela">
+  <thead><tr><th>Sabor</th><th>Categoria</th><th>Preço</th><th>Situação</th><th>Ações</th></tr></thead>
+  <tbody>
+  {% for c in cupcakes %}
+    <tr>
+      <td><span class="amostra" style="background: {{ c.cor }}"></span> {{ c.nome }}</td>
+      <td>{{ c.categoria.nome }}</td>
+      <td>{{ c.preco_centavos|brl }}</td>
+      <td>{{ 'Disponível' if c.disponivel else 'Esgotado' }}</td>
+      <td class="acoes">
+        <a href="{{ url_for('admin.editar_cupcake', cupcake_id=c.id) }}">Editar</a>
+        <form method="post" action="{{ url_for('admin.alternar_disponibilidade', cupcake_id=c.id) }}">
+          <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+          <button class="link" type="submit">{{ 'Marcar como esgotado' if c.disponivel else 'Voltar à vitrine' }}</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}

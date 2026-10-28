@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block titulo %}Acompanhar pedido{% endblock %}
+{% block conteudo %}
+<h1>Acompanhar pedido</h1>
+<form method="post" class="formulario estreito">
+  <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+  <div class="campo"><label for="numero">Número do pedido</label><input id="numero" name="numero" type="number" min="1" required></div>
+  <div class="campo"><label for="email">E-mail usado na compra</label><input id="email" name="email" type="email" required></div>
+  <button class="botao" type="submit">Ver status</button>
+</form>
+{% endblock %}

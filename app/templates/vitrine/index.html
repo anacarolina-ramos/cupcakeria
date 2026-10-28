@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cupcake_svg %}
+{% block titulo %}Vitrine{% endblock %}
+{% block conteudo %}
+<section class="hero">
+  <h1>Cupcakes gourmet feitos hoje, entregues na sua porta.</h1>
+  <p>Escolha os sabores, monte o carrinho e pague com PIX ou cartão.</p>
+</section>
+
+<nav class="filtros" aria-label="Filtrar por categoria">
+  <a href="{{ url_for('vitrine.index') }}" class="chip {% if not categoria_atual %}ativo{% endif %}">Todos</a>
+  {% for c in categorias %}
+    <a href="{{ url_for('vitrine.index', categoria=c.id) }}" class="chip {% if categoria_atual == c.id %}ativo{% endif %}">{{ c.nome }}</a>
+  {% endfor %}
+</nav>
+
+{% if cupcakes %}
+<ul class="grade">
+  {% for c in cupcakes %}
+  <li class="produto">
+    <div class="foto" style="--cobertura: {{ c.cor }}">{{ cupcake_svg(c.cor, 120) }}</div>
+    <div class="info">
+      <span class="tag">{{ c.categoria.nome }}</span>
+      <h2>{{ c.nome }}</h2>
+      <p>{{ c.descricao }}</p>
+      <div class="rodape-produto">
+        <strong class="preco">{{ c.preco_centavos|brl }}</strong>
+        <form method="post" action="{{ url_for('carrinho.adicionar', cupcake_id=c.id) }}">
+          <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+          {% if categoria_atual %}<input type="hidden" name="categoria" value="{{ categoria_atual }}">{% endif %}
+          <button class="botao" type="submit">Adicionar ao carrinho</button>
+        </form>
+      </div>
+    </div>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<section class="vazio">
+  <h2>Nenhum cupcake disponível nesta categoria</h2>
+  <p>Veja todos os sabores para escolher outro.</p>
+  <a class="botao" href="{{ url_for('vitrine.index') }}">Ver todos os sabores</a>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% from "_macros.html" import campo %}
+{% block titulo %}Finalizar pedido{% endblock %}
+{% block conteudo %}
+<h1>Finalizar pedido</h1>
+{% if erros %}<div class="aviso aviso-erro" role="alert">Corrija os campos destacados para continuar.</div>{% endif %}
+<div class="duas-colunas">
+  <form method="post" class="formulario" novalidate>
+    <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+    <fieldset>
+      <legend>Seus dados</legend>
+      {{ campo("nome", "Nome completo", dados, erros, extra='autocomplete="name"') }}
+      {{ campo("email", "E-mail", dados, erros, tipo="email", extra='autocomplete="email"', ajuda="Usado para acompanhar o pedido.") }}
+      {{ campo("telefone", "Telefone com DDD", dados, erros, tipo="tel", obrigatorio=False) }}
+    </fieldset>
+    <fieldset>
+      <legend>Endereço de entrega</legend>
+      {{ campo("cep", "CEP", dados, erros, extra='inputmode="numeric" maxlength="9" placeholder="00000-000" data-mascara-cep') }}
+      {{ campo("rua", "Rua", dados, erros) }}
+      <div class="linha">
+        {{ campo("numero", "Número", dados, erros) }}
+        {{ campo("complemento", "Complemento", dados, erros, obrigatorio=False) }}
+      </div>
+      <div class="linha">
+        {{ campo("bairro", "Bairro", dados, erros) }}
+        {{ campo("cidade", "Cidade", dados, erros) }}
+      </div>
+    </fieldset>
+    <fieldset class="{% if erros.get('metodo') %}com-erro{% endif %}">
+      <legend>Forma de pagamento</legend>
+      <label class="opcao"><input type="radio" name="metodo" value="pix" {% if dados.get('metodo') == 'pix' %}checked{% endif %}> PIX</label>
+      <label class="opcao"><input type="radio" name="metodo" value="cartao" {% if dados.get('metodo') == 'cartao' %}checked{% endif %}> Cartão</label>
+      <small class="ajuda">Pagamento simulado nesta versão: nenhuma cobrança real é feita.</small>
+      {% if erros.get('metodo') %}<small class="erro-campo">{{ erros['metodo'] }}</small>{% endif %}
+    </fieldset>
+    <button class="botao grande" type="submit">Pagar {{ total|brl }}</button>
+  </form>
+
+  <aside class="resumo-lateral" aria-label="Resumo do pedido">
+    <h2>Resumo</h2>
+    <ul>
+      {% for i in itens %}<li><span>{{ i.quantidade }}× {{ i.cupcake.nome }}</span><span>{{ i.subtotal_centavos|brl }}</span></li>{% endfor %}
+    </ul>
+    <p class="linha-total"><span>Total</span><strong>{{ total|brl }}</strong></p>
+    <a href="{{ url_for('carrinho.ver') }}">Voltar ao carrinho</a>
+  </aside>
+</div>
+{% endblock %}

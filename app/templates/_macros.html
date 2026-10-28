@@ -1,0 +1,19 @@
+{% macro cupcake_svg(cor, tamanho=110) %}
+<svg viewBox="0 0 120 120" width="{{ tamanho }}" height="{{ tamanho }}" role="img" aria-label="Ilustração de cupcake" xmlns="http://www.w3.org/2000/svg">
+  <path d="M30 62 L37 108 Q38 112 42 112 H78 Q82 112 83 108 L90 62 Z" fill="#E4B77A"/>
+  <path d="M45 64 L48 110 M60 64 V111 M75 64 L72 110" stroke="#C99555" stroke-width="2.5" fill="none"/>
+  <path d="M22 66 C16 46 38 42 42 32 C48 14 72 14 78 32 C82 42 104 46 98 66 Z" fill="{{ cor }}"/>
+  <path d="M40 50 C48 56 58 44 66 52" stroke="#ffffff" stroke-opacity=".35" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <circle cx="60" cy="16" r="5.5" fill="#C2185B"/>
+</svg>
+{% endmacro %}
+
+{% macro campo(nome, rotulo, dados, erros, tipo="text", obrigatorio=True, extra="", ajuda="") %}
+<div class="campo {% if erros.get(nome) %}com-erro{% endif %}">
+  <label for="{{ nome }}">{{ rotulo }}{% if not obrigatorio %} <span class="opcional">(opcional)</span>{% endif %}</label>
+  <input id="{{ nome }}" name="{{ nome }}" type="{{ tipo }}" value="{{ dados.get(nome, '') }}" {{ extra|safe }}
+         {% if erros.get(nome) %}aria-invalid="true" aria-describedby="erro-{{ nome }}"{% endif %}>
+  {% if ajuda and not erros.get(nome) %}<small class="ajuda">{{ ajuda }}</small>{% endif %}
+  {% if erros.get(nome) %}<small class="erro-campo" id="erro-{{ nome }}">{{ erros[nome] }}</small>{% endif %}
+</div>
+{% endmacro %}

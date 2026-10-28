@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "_macros.html" import cupcake_svg %}
+{% block titulo %}Carrinho{% endblock %}
+{% block conteudo %}
+<h1>Seu carrinho</h1>
+{% if itens %}
+<ul class="lista-itens">
+  {% for i in itens %}
+  <li class="item {% if not i.cupcake.disponivel %}esgotado{% endif %}">
+    <div class="mini">{{ cupcake_svg(i.cupcake.cor, 56) }}</div>
+    <div class="item-info">
+      <strong>{{ i.cupcake.nome }}</strong>
+      <span>{{ i.cupcake.preco_centavos|brl }} cada</span>
+      {% if not i.cupcake.disponivel %}<span class="alerta">Sabor esgotado. Remova para continuar.</span>{% endif %}
+    </div>
+    <form class="qtd" method="post" action="{{ url_for('carrinho.atualizar', cupcake_id=i.cupcake.id) }}">
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <label for="q{{ i.cupcake.id }}" class="so-leitor">Quantidade de {{ i.cupcake.nome }}</label>
+      <input id="q{{ i.cupcake.id }}" name="quantidade" type="number" min="0" max="{{ max_item }}" value="{{ i.quantidade }}">
+      <button class="botao secundario" type="submit">Atualizar</button>
+    </form>
+    <strong class="subtotal">{{ i.subtotal_centavos|brl }}</strong>
+    <form method="post" action="{{ url_for('carrinho.remover', cupcake_id=i.cupcake.id) }}">
+      <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+      <button class="link" type="submit">Remover</button>
+    </form>
+  </li>
+  {% endfor %}
+</ul>
+<div class="resumo">
+  <span>Total</span><strong class="total">{{ total|brl }}</strong>
+  <a class="botao" href="{{ url_for('pedido.checkout') }}">Finalizar pedido</a>
+</div>
+{% else %}
+<section class="vazio">
+  <h2>Seu carrinho está vazio</h2>
+  <p>Escolha um cupcake na vitrine para começar.</p>
+  <a class="botao" href="{{ url_for('vitrine.index') }}">Ver vitrine</a>
+</section>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block titulo %}Pedidos{% endblock %}
+{% block conteudo %}
+{% include "admin/_menu.html" %}
+<h1>Pedidos</h1>
+{% if novos %}<div class="aviso aviso-ok" role="status">Você tem {{ novos }} pedido{{ 's' if novos > 1 }} novo{{ 's' if novos > 1 }} para iniciar o preparo.</div>{% endif %}
+<nav class="filtros" aria-label="Filtrar por status">
+  <a class="chip {% if not status_atual %}ativo{% endif %}" href="{{ url_for('admin.pedidos') }}">Todos</a>
+  {% for chave, nome in STATUS_PEDIDO.items() %}
+  <a class="chip {% if status_atual == chave %}ativo{% endif %}" href="{{ url_for('admin.pedidos', status=chave) }}">{{ nome }}</a>
+  {% endfor %}
+</nav>
+{% if pedidos %}
+<div class="rolagem">
+<table class="tabela">
+  <thead><tr><th>Nº</th><th>Cliente</th><th>Itens</th><th>Endereço de entrega</th><th>Total</th><th>Status</th></tr></thead>
+  <tbody>
+  {% for p in pedidos %}
+    <tr>
+      <td>#{{ p.id }}</td>
+      <td>{{ p.cliente.nome }}<br><small>{{ p.criado_em.strftime('%d/%m/%Y %H:%M') }}</small></td>
+      <td>{% for i in p.itens %}{{ i.quantidade }}× {{ i.cupcake.nome }}<br>{% endfor %}</td>
+      <td>{{ p.endereco.completo }}</td>
+      <td>{{ p.total_centavos|brl }}</td>
+      <td>
+        <form method="post" action="{{ url_for('admin.alterar_status', pedido_id=p.id) }}" class="qtd">
+          <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+          <label class="so-leitor" for="s{{ p.id }}">Status do pedido {{ p.id }}</label>
+          <select id="s{{ p.id }}" name="status">
+            {% for chave, nome in STATUS_PEDIDO.items() %}<option value="{{ chave }}" {% if p.status == chave %}selected{% endif %}>{{ nome }}</option>{% endfor %}
+          </select>
+          <button class="botao secundario" type="submit">Salvar</button>
+        </form>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<section class="vazio"><h2>Nenhum pedido por aqui</h2><p>Os pedidos feitos na vitrine aparecem nesta lista.</p></section>
+{% endif %}
+{% endblock %}
