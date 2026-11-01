@@ -21,10 +21,9 @@
 | US14 | Entregador marca "Entregue" | Alta | Implementada (área da loja) |
 | US15 | Histórico de pedidos | Baixa | Não implementada |
 
-**Decisões de simplificação (a registrar no vídeo):**
+**Decisões de simplificação:**
 - Não há login de cliente: o cliente é identificado pelo e-mail no checkout e acompanha o pedido com número + e-mail.
 - Dono e entregador usam a mesma área protegida por senha.
 - Pagamento e e-mail são simulados (sem operadora real nem servidor de e-mail).
 - Valores guardados em centavos (inteiros) para evitar erro de arredondamento.
 
-**Requisitos não funcionais:** responsivo (celular), validação de entradas, proteção CSRF, senha do admin em variável de ambiente, testes automatizados.
