@@ -32,6 +32,26 @@
       <label class="opcao"><input type="radio" name="metodo" value="cartao" {% if dados.get('metodo') == 'cartao' %}checked{% endif %}> Cartão</label>
       <small class="ajuda">Pagamento simulado nesta versão: nenhuma cobrança real é feita.</small>
       {% if erros.get('metodo') %}<small class="erro-campo">{{ erros['metodo'] }}</small>{% endif %}
+
+      <div id="painel-pix" class="painel-pagamento" {% if dados.get('metodo') and dados.get('metodo') != 'pix' %}hidden{% endif %}>
+        <div class="campo">
+          <label for="codigo-pix">PIX copia e cola</label>
+          <div class="copiar">
+            <input id="codigo-pix" type="text" value="{{ chave_pix }}" readonly>
+            <button type="button" class="botao secundario" data-copiar="#codigo-pix">Copiar</button>
+          </div>
+          <small class="ajuda">Valor a pagar: {{ total|brl }}</small>
+        </div>
+      </div>
+
+      <div id="painel-cartao" class="painel-pagamento" {% if dados.get('metodo') and dados.get('metodo') != 'cartao' %}hidden{% endif %}>
+        {{ campo("cartao_numero", "Número do cartão", dados, erros, ajuda="Cartão de teste: 4242 4242 4242 4242", extra='inputmode="numeric" autocomplete="off" maxlength="23" placeholder="0000 0000 0000 0000" data-mascara-cartao') }} 
+        {{ campo("cartao_nome", "Nome impresso no cartão", dados, erros, extra='autocomplete="off"') }}
+        <div class="linha">
+          {{ campo("cartao_validade", "Validade", dados, erros, extra='inputmode="numeric" autocomplete="off" maxlength="5" placeholder="MM/AA" data-mascara-validade') }}
+          {{ campo("cartao_cvv", "CVV", dados, erros, extra='inputmode="numeric" autocomplete="off" maxlength="4" placeholder="123" data-mascara-cvv') }}
+        </div>
+      </div>
     </fieldset>
     <button class="botao grande" type="submit">Pagar {{ total|brl }}</button>
   </form>

@@ -3,6 +3,7 @@ import re
 from decimal import Decimal, InvalidOperation
 
 from .models import METODOS_PAGAMENTO
+from .pagamentos import validar_cartao
 
 RE_EMAIL = re.compile(r"^[^@\s]+@[^@\s]+\.[^@\s]+$")
 RE_CEP = re.compile(r"^\d{5}-?\d{3}$")
@@ -55,6 +56,10 @@ def validar_checkout(form):
             erros[campo] = f"Informe {rotulo}."
     if dados["metodo"] not in METODOS_PAGAMENTO:
         erros["metodo"] = "Escolha uma forma de pagamento: PIX ou cartão."
+    if dados["metodo"] == "cartao":
+        # Dados do cartão só são validados: não entram em 'dados' (não são devolvidos
+        # ao formulário) e não chegam ao banco de dados.
+        erros.update(validar_cartao(form))
     return dados, erros
 
 

@@ -4,6 +4,7 @@ from flask import (Blueprint, abort, flash, redirect, render_template,
 
 from .. import carrinho as servico
 from ..models import Cliente, Pedido, db
+from ..pagamentos import CHAVE_PIX_DEMO
 from ..pedidos import criar_pedido
 from ..validadores import validar_checkout
 
@@ -32,14 +33,15 @@ def checkout():
         dados, erros = validar_checkout(request.form)
         if erros:
             return render_template("pedido/checkout.html", itens=itens, total=total,
-                                   dados=dados, erros=erros), 422
+                                   dados=dados, erros=erros, chave_pix=CHAVE_PIX_DEMO), 422
         pedido = criar_pedido(dados, itens)
         servico.limpar()
         _autorizar(pedido.id)
         flash("Pagamento aprovado! Seu pedido foi recebido.", "ok")
         return redirect(url_for("pedido.detalhe", pedido_id=pedido.id))
 
-    return render_template("pedido/checkout.html", itens=itens, total=total, dados={}, erros={})
+    return render_template("pedido/checkout.html", itens=itens, total=total, dados={}, erros={},
+                           chave_pix=CHAVE_PIX_DEMO)
 
 
 @bp.route("/pedido/<int:pedido_id>")

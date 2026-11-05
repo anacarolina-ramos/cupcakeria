@@ -134,3 +134,9 @@ fieldset.com-erro { border-color: var(--erro); }
 @media (max-width: 480px) {
   .linha .campo label { min-height: 2.6em; display: flex; align-items: flex-end; }
 }
+
+/* Pagamento: painéis de PIX e cartão */
+[hidden] { display: none !important; }
+.painel-pagamento { margin-top: .75rem; padding: .9rem 1rem; border: 1px dashed var(--linha); border-radius: 10px; background: var(--fundo); }
+.copiar { display: flex; gap: .5rem; align-items: center; }
+.copiar input { flex: 1; min-width: 0; }
