@@ -132,7 +132,7 @@ fieldset.com-erro { border-color: var(--erro); }
 .foto .foto-img { width: 100%; height: 210px; border-radius: 0; }
 
 @media (max-width: 480px) {
-  .linha .campo label { min-height: 2.6em; display: flex; align-items: flex-end; }
+  .linha .campo label { min-height: 2.6em; display: flex; flex-wrap: wrap; align-items: flex-end; column-gap: .3em; }
 }
 
 /* Pagamento: painéis de PIX e cartão */
