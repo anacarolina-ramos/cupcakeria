@@ -129,7 +129,7 @@ flask --app app run --debug
 python -m pytest -v
 ```
 
-A suíte contém 55 casos de teste, que cobrem validação de entradas, vitrine e carrinho, finalização e acompanhamento de pedidos e área administrativa.
+A suíte contém 77 casos de teste, que cobrem validação de entradas, vitrine e carrinho, finalização e acompanhamento de pedidos e área administrativa.
 
 ### Testes com usuários (validação)
 
