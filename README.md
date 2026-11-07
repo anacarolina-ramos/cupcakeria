@@ -104,6 +104,7 @@ O banco é composto pelas tabelas `categorias`, `clientes`, `cupcakes`, `enderec
 | `docs/04-banco-de-dados.md` | Projeto conceitual, lógico e físico, e dicionário de dados |
 | `docs/05-modelo-de-teste.md` | Formulário de teste com usuários e modelo do laudo de qualidade |
 | `docs/06-passo-a-passo-git.md` | Roteiro de versionamento |
+| [`docs/testes-e-laudo/evidencias/`](docs/testes-e-laudo/evidencias) | Evidências dos testes com usuários e do laudo de qualidade (imagens, com dados pessoais cobertos) |
 
 ## 7. Como executar localmente
 
@@ -133,7 +134,7 @@ A suíte contém 77 casos de teste, que cobrem validação de entradas, vitrine 
 
 ### Testes com usuários (validação)
 
-A aplicação foi disponibilizada a colegas de curso para teste, conforme o roteiro e o formulário de `docs/05-modelo-de-teste.md`. Os registros individuais e o laudo de qualidade, com erros encontrados, correções e evidências, estão na pasta `docs/`.
+A aplicação foi disponibilizada a cinco colegas de curso para teste, em 02/11/2026, conforme o roteiro e o formulário de `docs/05-modelo-de-teste.md`. As evidências, em imagem e com dados pessoais cobertos, estão em [`docs/testes-e-laudo/evidencias/`](docs/testes-e-laudo/evidencias). O laudo de qualidade, com os problemas encontrados e as correções, consta no documento de entrega.
 
 ## 9. Implantação
 
