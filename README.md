@@ -145,7 +145,9 @@ A aplicação é implantada no Render por meio do arquivo `render.yaml`, que def
 3. Definir o valor da variável `ADMIN_SENHA`.
 4. Aguardar a conclusão da implantação e acessar o endereço gerado.
 
-Variáveis de ambiente utilizadas: `DATABASE_URL`, `SECRET_KEY` e `ADMIN_SENHA`.
+   Variáveis de ambiente utilizadas: `DATABASE_URL` (preenchida automaticamente a partir do banco criado pelo `render.yaml`), `SECRET_KEY` (gerada automaticamente) e `ADMIN_SENHA` (definida pelo responsável no momento da implantação). O `render.yaml` também fixa a versão do Python (`PYTHON_VERSION`).
+
+   Observação: no plano gratuito do Render, o serviço web entra em repouso após alguns minutos sem acessos (o primeiro acesso seguinte pode levar cerca de um minuto) e o banco PostgreSQL expira 30 dias após a criação (neste projeto, em 27/11/2026, aproximadamente).
 
 ## 10. Créditos das imagens
 
